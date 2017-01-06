@@ -2,7 +2,7 @@
 
 # Discord Auto-grouping
 
-Discord Auto-grouping is a Discord bot that uses discord.js to automatically group users into "subchannels" in Discord servers, eliminating the need for creating numerous group channels. It was developed out of necessity for Crit Cola to mitigate two major pitfalls with Discord, their lack of subchannels and temporary channels.
+Discord Auto-grouping is a Discord bot that uses discord.js to automatically group users into "subchannels" in Discord servers, eliminating the need for creating numerous group channels. It was developed out of necessity for Crit Cola to mitigate two major pitfalls with Discord: their lack of subchannels and temporary channels.
 
 When a user enters a channel prefixed with a game controller emoji (🎮), they'll be automatically grouped into their own "subchannel" where they can be joined by the rest of their group. When the group channel empties, it will be immediately deleted.
 
