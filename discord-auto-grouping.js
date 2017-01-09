@@ -10,7 +10,7 @@ client.on('ready', () => {
 	
 	// Evaluate only voice channels.
 	channelsOrdered = channelsOrdered.filter(function(channel) {
-		return channel.type == 'voice' && channel.position !== 'undefined';
+		return channel.type == 'voice' && typeof channel.position !== 'undefined';
 	});
 	
 	// Sort channels by their current position.
@@ -43,7 +43,7 @@ client.on('voiceStateUpdate', (oldMember, member) => {
 		if (newChannel.name.startsWith('🎮')) {
 			member.guild.createChannel('Group', 'voice')
 				.then(createdChannel => {
-					createdChannel.edit({bitrate: 96000, position: newChannel.position + 1})
+					createdChannel.edit({bitrate: 96000, position: newChannel.position + 50})
 						.then(createdChannel => {
 							member.setVoiceChannel(createdChannel)
 								.then(console.log('[' + new Date().toISOString() + '] Moved user "' + member.user.username + '#' + member.user.discriminator + '" (' + member.user.id + ') to ' + createdChannel.type + ' channel "' + createdChannel.name + '" (' + createdChannel.id + ')'))
