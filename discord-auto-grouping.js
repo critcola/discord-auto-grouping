@@ -5,6 +5,9 @@ const client = new Discord.Client();
 client.on('ready', () => {
 	console.log('[' + new Date().toISOString() + '] Connected!');
 	
+	// Set the presence status.
+	client.user.setStatus('online');
+	
 	// Get a list of channels.
 	var channelsOrdered = client.channels.array().slice(0);
 	
@@ -46,7 +49,7 @@ client.on('voiceStateUpdate', (oldMember, member) => {
 					createdChannel.edit({bitrate: 96000, position: newChannel.position + 50})
 						.then(createdChannel => {
 							member.setVoiceChannel(createdChannel)
-								.then(console.log('[' + new Date().toISOString() + '] Moved user "' + member.user.username + '#' + member.user.discriminator + '" (' + member.user.id + ') to ' + createdChannel.type + ' channel "' + createdChannel.name + '" (' + createdChannel.id + ')'))
+								.then(console.log('[' + new Date().toISOString() + '] Moved user "' + member.user.username + '#' + member.user.discriminator + '" (' + member.user.id + ') to ' + createdChannel.type + ' channel "' + createdChannel.name + '" (' + createdChannel.id + ') at position ' + createdChannel.position))
 								.catch(console.error);
 						})
 						.catch(console.error);
