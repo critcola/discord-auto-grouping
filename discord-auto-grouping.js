@@ -5,7 +5,7 @@ const client = new Discord.Client();
 client.on('ready', () => {
 	console.log('[' + new Date().toISOString() + '] Connected!');
 	
-	// Set the presence status.
+	// Set the online status.
 	client.user.setStatus('online');
 	
 	// Get a list of channels.
@@ -44,7 +44,7 @@ client.on('voiceStateUpdate', (oldMember, member) => {
 		
 		// If the user entered a game channel (prefixed with a game controller icon), group them into their own channel.
 		if (newChannel.name.startsWith('🎮')) {
-			member.guild.createChannel('Group', 'voice')
+			member.guild.createChannel('━ Group', 'voice')
 				.then(createdChannel => {
 					createdChannel.edit({bitrate: 96000, position: newChannel.position + 50})
 						.then(createdChannel => {
