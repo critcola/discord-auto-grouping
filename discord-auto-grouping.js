@@ -42,11 +42,15 @@ client.on('voiceStateUpdate', (oldMember, member) => {
 	if (member.voiceChannelID) {
 		const newChannel = member.guild.channels.get(member.voiceChannelID);
 		
-		// If the user entered a game channel (prefixed with a game controller icon), group them into their own channel.
-		if (newChannel.name.startsWith('🎮')) {
-			member.guild.createChannel('━ Group', 'voice')
+		// If the user entered a game channel (prefixed with a game controller unicode emoji), group them into their own channel.
+		if (newChannel.name.startsWith(String.fromCodePoint('0x1F3AE'))) {
+			newChannel.clone(String.fromCodePoint('0x2501') + ' Group', true)
 				.then(createdChannel => {
-					createdChannel.edit({bitrate: 96000, position: newChannel.position + 50})
+					createdChannel.edit({
+							bitrate: 96000,
+							position: newChannel.position + 50,
+							userLimit: -0
+						})
 						.then(createdChannel => {
 							member.setVoiceChannel(createdChannel)
 								.then(console.log('[' + new Date().toISOString() + '] Moved user "' + member.user.username + '#' + member.user.discriminator + '" (' + member.user.id + ') to ' + createdChannel.type + ' channel "' + createdChannel.name + '" (' + createdChannel.id + ') at position ' + createdChannel.position))
@@ -63,7 +67,7 @@ client.on('voiceStateUpdate', (oldMember, member) => {
 		const oldChannel = oldMember.guild.channels.get(oldMember.voiceChannelID);
 		
 		// Delete the user's now empty temporary channel, if applicable.
-		if (oldChannel.name.includes('Group') && !oldChannel.members.array().length) {
+		if (oldChannel.name.startsWith(String.fromCodePoint('0x2501') + ' Group') && !oldChannel.members.array().length) {
 			oldChannel.delete()
 				.then(function() {
 					console.log('[' + new Date().toISOString() + '] Deleted ' + oldChannel.type + ' channel "' + oldChannel.name + '" (' + oldChannel.id + ')');
