@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
+const token = '';//your bot token
 
 // Connect and perform routine maintenance.
 client.on('ready', () => {
@@ -32,8 +33,18 @@ client.on('ready', () => {
 			.catch(console.error);
 		currentPosition += 100;
 	});
+	
+	//for each user in designated channels on start, re-sort them into groups
+	channelsOrdered.forEach(function(channel) {
+		currentChannel = client.channels.get(channel.id);
+		currentChannel.edit({bitrate: 96000, position: currentPosition})
+			.then(editedChannel => {
+				console.log('[' + new Date().toISOString() + '] Set ' + editedChannel.type + ' channel "' + editedChannel.name + '" (' + editedChannel.id + ') position to ' + editedChannel.position + ' with ' + editedChannel.bitrate / 1000 + 'kbps bitrate')
+			})
+			.catch(console.error);
+		currentPosition += 100;
+	});
 });
-
 
 // Trigger on VOICE_STATE_UPDATE events.
 client.on('voiceStateUpdate', (oldMember, member) => {
@@ -77,4 +88,4 @@ client.on('voiceStateUpdate', (oldMember, member) => {
 	}
 });
 
-client.login('');
+client.login(token);
