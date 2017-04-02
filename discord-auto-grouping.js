@@ -2,13 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const token = '';//your bot token
 
-// Connect and perform routine maintenance.
-client.on('ready', () => {
-	console.log('[' + new Date().toISOString() + '] Connected!');
-	
-	// Set the online status.
-	client.user.setStatus('online');
-	
+function orderchannels(){
 	// Get a list of channels.
 	var channelsOrdered = client.channels.array().slice(0);
 	
@@ -44,6 +38,17 @@ client.on('ready', () => {
 			.catch(console.error);
 		currentPosition += 100;
 	});
+	
+	console.log('Channel Ordering Complete');
+}
+// Connect and perform routine maintenance.
+client.on('ready', () => {
+	console.log('[' + new Date().toISOString() + '] Connected!');
+	
+	// Set the online status.
+	client.user.setStatus('online');
+	
+	orderchannels();
 });
 
 // Trigger on VOICE_STATE_UPDATE events.
@@ -74,7 +79,7 @@ client.on('voiceStateUpdate', (oldMember, member) => {
 	}
 	
 	// Check if the user came from another channel.
-	if (oldMember.voiceChannelID) {
+	if (oldMember.voiceChannelID&&oldMember.guild.channels.get(oldMember.voiceChannelID)) {
 		const oldChannel = oldMember.guild.channels.get(oldMember.voiceChannelID);
 		
 		// Delete the user's now empty temporary channel, if applicable.
@@ -85,6 +90,17 @@ client.on('voiceStateUpdate', (oldMember, member) => {
 				})
 				.catch(console.error);
 		}
+	}
+});
+
+client.on('channelCreate', function(channel){
+	if(!channel.name.startsWith(String.fromCodePoint('0x2501') + ' Group')){
+		orderchannels();
+	}
+});
+client.on('channelDelete', function(channel){
+	if(!channel.name.startsWith(String.fromCodePoint('0x2501') + ' Group')){
+		orderchannels();
 	}
 });
 
