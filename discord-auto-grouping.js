@@ -27,7 +27,7 @@ client.on('voiceStateUpdate', (oldMember, member) => {
 					createdChannel.edit({
 							bitrate: 96000,
 							position: newChannel.position + 50,
-							userLimit: -0
+							userLimit: newChannel.userLimit
 						})
 						.then(createdChannel => {
 							member.setVoiceChannel(createdChannel)
